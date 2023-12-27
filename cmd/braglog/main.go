@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
-	"github.com/alexevans/braglog/internal/editor"
-	"github.com/alexevans/braglog/internal/fileio"
+	"github.com/alex-evans/braglog/internal/editor"
+	"github.com/alex-evans/braglog/internal/fileio"
 )
 
 func main() {
@@ -44,7 +45,10 @@ func editAndSave() error {
 	fmt.Println("Captured Brag Content:")
 	fmt.Println(string(content))
 
-	err = fileio.SaveToFile(content)
+	today := time.Now().Format("2006-01-02")
+	filename := fmt.Sprintf("%s.md", today)
+
+	err = fileio.SaveToFile(filename, content)
 	if err != nil {
 		return err
 	}
