@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"time"
 
 	"github.com/alex-evans/braglog/internal/editor"
@@ -10,6 +11,21 @@ import (
 )
 
 func main() {
+	switch runtime.GOOS {
+	case "windows":
+		fmt.Println("***ERROR***")
+		fmt.Println("Windows is currently not supported")
+		os.Exit(1)
+	case "linux":
+		fmt.Println("***WARNING***")
+		fmt.Println("Linux not currently supported but allwowed to run")
+	case "darwin":
+		fmt.Println("Running on Darwin - supported")
+	default:
+		fmt.Println("***WARNING***")
+		fmt.Println("Unknown Operating System - allowed to run")
+	}
+
 	if len(os.Args) < 2 {
 		fmt.Println("***ERROR***")
 		fmt.Println("Usage: braglog <command>")
@@ -36,6 +52,7 @@ func editAndSave() error {
 	if err != nil {
 		return err
 	}
+	defer os.Remove(tmpfile.Name())
 
 	content, err := fileio.ReadFile(tmpfile.Name())
 	if err != nil {

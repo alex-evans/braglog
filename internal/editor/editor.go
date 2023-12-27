@@ -11,7 +11,6 @@ func LaunchEditor() (*os.File, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create temporary file: %v", err)
 	}
-	defer os.Remove(tmpfile.Name())
 
 	cmd := exec.Command("vim", tmpfile.Name())
 	cmd.Stdin = os.Stdin
