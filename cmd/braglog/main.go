@@ -22,7 +22,7 @@ func main() {
 		fmt.Println("***WARNING***")
 		fmt.Println("Linux not currently supported but allwowed to run")
 	case "darwin":
-		fmt.Println("Running on Darwin - supported")
+		// Darwin / MacOS supported
 	default:
 		fmt.Println("***WARNING***")
 		fmt.Println("Unknown Operating System - allowed to run")
@@ -48,7 +48,7 @@ func main() {
 			handleError("Error editing and saving:", err)
 		}
 	case "hill":
-		err := hillchart.GenerateHillChart()
+		err := hillchart.GenerateHillChart(40, "PLFM-95")
 		if err != nil {
 			handleError("Error hill chart generating:", err)
 		}
