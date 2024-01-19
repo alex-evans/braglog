@@ -1,6 +1,7 @@
 package hillchart_test
 
 import (
+	"fmt"
 	"image"
 	"os"
 	"reflect"
@@ -15,13 +16,13 @@ func TestGenerateHillChart(t *testing.T) {
 		pointLabel      string
 	}{
 		{40, "TestPoint1"},
-		// {75, "TestPoint2"},
+		{75, "TestPoint2"},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.pointLabel, func(t *testing.T) {
 			generatedImagePath := "normal.png"
-			expectedImagePath := "expected.png"
+			expectedImagePath := fmt.Sprintf("testImages/expected_%.0f.png", tt.pointPercentage)
 
 			err := hillchart.GenerateHillChart(tt.pointPercentage, tt.pointLabel)
 			if err != nil {
