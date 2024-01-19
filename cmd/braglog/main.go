@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/alex-evans/braglog/internal/configure"
 	"github.com/alex-evans/braglog/internal/editor"
 	"github.com/alex-evans/braglog/internal/fileio"
 	"github.com/alex-evans/braglog/internal/hillchart"
@@ -37,18 +36,13 @@ func main() {
 	command := os.Args[1]
 
 	switch command {
-	case "config":
-		err := configure.ConfigureUser()
-		if err != nil {
-			handleError("Error configuring:", err)
-		}
 	case "edit":
 		err := editAndSave()
 		if err != nil {
 			handleError("Error editing and saving:", err)
 		}
 	case "hill":
-		err := hillchart.GenerateHillChart(40, "PLFM-95")
+		err := hillchart.GenerateHillChart(50, "test")
 		if err != nil {
 			handleError("Error hill chart generating:", err)
 		}
