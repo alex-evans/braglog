@@ -2,7 +2,10 @@ module github.com/alex-evans/braglog
 
 go 1.21.4
 
-require gonum.org/v1/plot v0.14.0
+require (
+	github.com/mattn/go-sqlite3 v1.14.20
+	gonum.org/v1/plot v0.14.0
+)
 
 require (
 	git.sr.ht/~sbinet/gg v0.5.0 // indirect
