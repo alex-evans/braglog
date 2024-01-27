@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"runtime"
 	"time"
 
+	"github.com/alex-evans/braglog/internal/database/sqlite"
 	"github.com/alex-evans/braglog/internal/editor"
 	"github.com/alex-evans/braglog/internal/fileio"
 	"github.com/alex-evans/braglog/internal/hillchart"
@@ -33,9 +35,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	err := setupDatabase()
+	if err != nil {
+		handleError("Error setting up database:", err)
+		os.Exit(1)
+	}
+	defer sqlite.Close()
+
 	command := os.Args[1]
 
 	switch command {
+	case "init":
+		// testing init db
 	case "edit":
 		err := editAndSave()
 		if err != nil {
@@ -51,6 +62,35 @@ func main() {
 		fmt.Println("Unrecognized command:", command)
 		os.Exit(1)
 	}
+}
+
+func setupDatabase() error {
+	executablePath, err := os.Executable()
+	if err != nil {
+		handleError("Error setting Executable Path:", err)
+	}
+
+	databaseDir := filepath.Join(filepath.Dir(executablePath), "data")
+	err = os.MkdirAll(databaseDir, 0755)
+	if err != nil {
+		handleError("Error creating data directory:", err)
+	}
+
+	databasePath := filepath.Join(databaseDir, "braglog.db")
+
+	err = sqlite.Init(databasePath)
+	if err != nil {
+		return err
+	}
+
+	err = sqlite.MigrateDatabase(sqlite.GetDB())
+	if err != nil {
+		sqlite.Close()
+		return err
+	}
+
+	fmt.Println("Database setup and migrations completed successfully")
+	return nil
 }
 
 func editAndSave() error {
