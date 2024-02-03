@@ -65,12 +65,12 @@ func main() {
 }
 
 func setupDatabase() error {
-	executablePath, err := os.Executable()
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		handleError("Error setting Executable Path:", err)
+		handleError("Error getting user home directory:", err)
 	}
 
-	databaseDir := filepath.Join(filepath.Dir(executablePath), "data")
+	databaseDir := filepath.Join(homeDir, ".braglog", "data")
 	err = os.MkdirAll(databaseDir, 0755)
 	if err != nil {
 		handleError("Error creating data directory:", err)
@@ -78,12 +78,14 @@ func setupDatabase() error {
 
 	databasePath := filepath.Join(databaseDir, "braglog.db")
 
+	fmt.Println("Database Path:", databasePath)
+
 	err = sqlite.Init(databasePath)
 	if err != nil {
 		return err
 	}
 
-	err = sqlite.MigrateDatabase(sqlite.GetDB())
+	err = sqlite.MigrateDatabase(sqlite.GetDB(), databasePath)
 	if err != nil {
 		sqlite.Close()
 		return err

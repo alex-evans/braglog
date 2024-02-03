@@ -7,8 +7,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func MigrateDatabase(db *sql.DB) error {
-	db, err := sql.Open("sqlite3", "brag.db")
+func MigrateDatabase(db *sql.DB, databasePath string) error {
+	db, err := sql.Open("sqlite3", databasePath)
 	if err != nil {
 		return fmt.Errorf("failed to open database: %v", err)
 	}
